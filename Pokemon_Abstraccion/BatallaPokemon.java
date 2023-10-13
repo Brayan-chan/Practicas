@@ -1,5 +1,8 @@
 //package pokemon_herencia;
 
+import pokemon.PokemonAcero;
+import pokemon.PokemonElectrico;
+
 public class BatallaPokemon {
     //PokemonElectrico pokemonElectrico = new PokemonElectrico("Pikachu", 10);
     //PokemonAcero pokemonAcero = new PokemonAcero("Solgaleo", 10);

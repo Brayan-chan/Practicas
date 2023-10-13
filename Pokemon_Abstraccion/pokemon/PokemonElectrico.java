@@ -1,3 +1,4 @@
+package pokemon;
 //package pokemon_herencia;
 
 public class PokemonElectrico extends Pokemon {
