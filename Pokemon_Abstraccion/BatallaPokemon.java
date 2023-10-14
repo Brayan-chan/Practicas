@@ -11,10 +11,10 @@ public class BatallaPokemon {
     PokemonElectrico pokemonElectrico = new PokemonElectrico("Pikachu", 10);
     PokemonAcero pokemonAcero = new PokemonAcero("Solgaleo", 10);
 
-    pokemonElectrico.atacar(2, pokemonAcero);
+    pokemonElectrico.atacar(1, pokemonAcero);
     //pokemonAcero.recibirAtaque("Cola de hierro");
     System.out.println("Hp = " + pokemonAcero.getHP());
-    pokemonAcero.atacar(1, pokemonElectrico);
+    pokemonAcero.atacar(3, pokemonElectrico);
     //pokemonElectrico.recibirAtaque("Puño meteoro");
     System.out.println("Hp = " + pokemonElectrico.getHP());   
     }
