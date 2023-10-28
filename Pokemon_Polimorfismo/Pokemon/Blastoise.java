@@ -14,9 +14,9 @@ import static Pokemon.Tipo.TIERRA;
 public class Blastoise extends Pokemon implements ClaseInterfaz {
 
     public Blastoise(String nombre, int nivel, int PS, int ataque,
-        int defensa, int ataqueespecial, int defensaespecial, int velocidad) {
+            int defensa, int ataqueespecial, int defensaespecial, int velocidad) {
         super(nombre, Tipo.AGUA, nivel, PS, ataque, defensa, ataqueespecial,
-        defensaespecial, velocidad);
+                defensaespecial, velocidad);
 
         ListaMovimientos listaMovimientos = new ListaMovimientos();
 
@@ -33,7 +33,7 @@ public class Blastoise extends Pokemon implements ClaseInterfaz {
         double puntosRestados = danio;
         this.PS -= puntosRestados;
         System.out.printf("%s recibe %d puntos de danio\n",
-        this.getNombre(), danio);
+                this.getNombre(), danio);
     }
 
     @Override

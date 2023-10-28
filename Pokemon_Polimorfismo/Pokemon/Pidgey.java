@@ -15,7 +15,7 @@ public class Pidgey extends Pokemon
         implements ClaseInterfaz {
 
     public Pidgey(String nombre, Tipo Tipo, int nivel, int PS, int ataque,
-        int defensa, int ataqueespecial, int defensaespecial, int velocidad) {
+            int defensa, int ataqueespecial, int defensaespecial, int velocidad) {
         super(nombre, Tipo, nivel, PS, ataque, defensa, ataqueespecial, defensaespecial, velocidad);
 
         ListaMovimientos listaMovimientos = new ListaMovimientos();
@@ -32,7 +32,7 @@ public class Pidgey extends Pokemon
         double puntosRestados = danio;
         this.PS -= puntosRestados;
         System.out.printf("%s recibe %d puntos de danio\n",
-        this.getNombre(), danio);
+                this.getNombre(), danio);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class Pidgey extends Pokemon
     @Override
     public boolean ConcretarAtaque(Movimiento movimiento, Pokemon pokemon, Tipo Tipo, TipoMovimiento TipoMovimiento) {
         System.out.printf("%s ataca a %s con ataque especial \n", this.getNombre(), pokemon.getNombre(),
-        movimiento.getNombre());
+                movimiento.getNombre());
         double efectividads = obtenerEfectividad(Tipo, TipoMovimiento);
 
         if (movimiento.getPp() > 0) {

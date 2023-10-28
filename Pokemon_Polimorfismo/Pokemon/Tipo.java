@@ -1,7 +1,7 @@
 package Pokemon;
 
 public enum Tipo {
-    
+
     ACERO, AGUA, BICHO,
     DRAGON, ELECTRICO, FANTASMA,
     FUEGO, HADA, HIELO,
