@@ -82,39 +82,39 @@ public class Pidgey2T extends Pidgey implements ClaseInterfaz {
 
     @Override
     public double obtenerEfectividad(Tipo tipo, TipoMovimiento TipoMovimiento) {
-        double efectividads = 1;
+        double efectividadcase = 1;
         switch (tipo) {
             case ACERO:
-                efectividads *= 0.5;
+                efectividadcase *= 0.5;
                 break;
             case FUEGO:
-                efectividads *= 0.5;
+                efectividadcase *= 0.5;
                 break;
             case HADA:
-                efectividads *= 0.5;
+                efectividadcase *= 0.5;
                 break;
             case LUCHA:
-                efectividads *= 0.5;
+                efectividadcase *= 0.5;
                 break;
             case AGUA:
-                efectividads *= 2;
+                efectividadcase *= 2;
                 break;
             case ELECTRICO:
-                efectividads *= 2;
+                efectividadcase *= 2;
                 break;
             case BICHO:
-                efectividads *= 0.25;
+                efectividadcase *= 0.25;
                 break;
             case PLANTA:
-                efectividads *= 0.25;
+                efectividadcase *= 0.25;
                 break;
             case ROCA:
-                efectividads *= 4;
+                efectividadcase *= 4;
                 break;
             case TIERRA:
-                efectividads *= 0;
+                efectividadcase *= 0;
                 break;
         }
-        return efectividads;
+        return efectividadcase;
     }
 }
