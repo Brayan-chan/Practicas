@@ -1,5 +1,10 @@
 package CajeroAutomatico;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CajeroAutomatico {
@@ -14,6 +19,24 @@ public class CajeroAutomatico {
     }
 
     public void cargarBilletesIniciales() {
+        File file = new File(BILLETES_FILE);
+
+        if (file.exists() && !file.isDirectory()) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+                billetes = (List<Billete>) ois.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // Si el archivo no existe, crea billetes iniciales y guárdalos
+            billetes = new ArrayList<>();
+            billetes.add(new Billete(100, 100));
+            billetes.add(new Billete(200, 100));
+            billetes.add(new Billete(500, 20));
+            billetes.add(new Billete(1000, 10));
+
+            guardarBilletes();
+        }
     }
 
     public void guardarBilletes() {
