@@ -50,6 +50,12 @@ public class CajeroAutomatico {
     }
 
     public void consultarSaldo() {
+        if (usuario != null) {
+            //Getter de usuario.getSaldo
+            //System.out.println("Saldo actual: $" + usuario.getSaldo());
+        } else {
+            System.out.println("No hay usuario registrado. Ingrese al modo cajero primero.");
+        }
     }
 
     public void retirarEfectivo(double cantidad) {
