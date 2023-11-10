@@ -9,6 +9,10 @@ public class CajeroAutomatico {
     private Usuario usuario;
     private List<Billete> billetes;
 
+    public CajeroAutomatico() {
+        cargarBilletesIniciales();
+    }
+
     public void cargarBilletesIniciales() {
     }
 

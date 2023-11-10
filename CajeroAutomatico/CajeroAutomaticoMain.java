@@ -1,5 +1,4 @@
 package CajeroAutomatico;
-
 import java.util.Scanner;
 
 public class CajeroAutomaticoMain {
