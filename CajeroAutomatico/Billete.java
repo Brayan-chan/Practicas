@@ -8,13 +8,11 @@ public class Billete implements Serializable {
     private int denominacion;
     private int cantidad;
 
-    // Constructor
     public Billete(int denominacion, int cantidad) {
         this.denominacion = denominacion;
         this.cantidad = cantidad;
     }
 
-    // Getters y setters
     public int getDenominacion() {
         return denominacion;
     }

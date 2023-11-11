@@ -106,6 +106,21 @@ public class CajeroAutomatico {
         return false;
     }
 
+    private void actualizarBilletesDisponibles(double cantidadRetirada) {
+        for (Billete billete : billetes) {
+            int denominacion = billete.getDenominacion();
+            int cantidadBilletes = billete.getCantidad();
+
+            int billetesUtilizados = (int) (cantidadRetirada / denominacion);
+            cantidadRetirada -= billetesUtilizados * denominacion;
+
+            // Actualizar la cantidad de billetes disponibles
+            billete.setCantidad(cantidadBilletes - billetesUtilizados);
+        }
+        //Guardar los nevos billetes disponibles
+        guardarBilletes(); 
+    }
+
     public void registrarLog(String accion, String usuario, double saldo, boolean seRealizo) {
     }
 
