@@ -82,6 +82,30 @@ public class CajeroAutomatico {
         }
     }
 
+    private boolean verificarDisponibilidadBilletes(double cantidad) {
+        int montoRestante = (int) cantidad;
+
+        for (Billete billete : billetes) {
+            int denominacion = billete.getDenominacion();
+            int cantidadBilletes = billete.getCantidad();
+
+            int billetesNecesarios = montoRestante / denominacion;
+
+            int billetesAUsar = Math.min(billetesNecesarios, cantidadBilletes);
+
+            if (billetesAUsar > 0) {
+                montoRestante -= billetesAUsar * denominacion;
+            }
+
+            if (montoRestante == 0) {
+                // Combinación de billetes 
+                billete.setCantidad(cantidadBilletes - billetesAUsar);
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void registrarLog(String accion, String usuario, double saldo, boolean seRealizo) {
     }
 
