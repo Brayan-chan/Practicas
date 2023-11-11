@@ -45,6 +45,7 @@ public class CajeroAutomatico {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(BILLETES_FILE))) {
             oos.writeObject(billetes);
         } catch (IOException e) {
+            //Stacktracem: Permite mostrar el nombre de una excepción junto con el mensaje que devuelve getMessage()
             e.printStackTrace();
         }
     }
@@ -59,6 +60,26 @@ public class CajeroAutomatico {
     }
 
     public void retirarEfectivo(double cantidad) {
+        if (usuario != null) {
+            if (cantidad > 0 && cantidad <= usuario.getSaldo()) {
+                if (verificarDisponibilidadBilletes(cantidad)) {
+                    // Realizar la operación de retiro
+                    usuario.retirarSaldo(cantidad);
+                    actualizarBilletesDisponibles(cantidad);
+
+                    System.out.println("Retiro exitoso. Nuevo saldo: $" + usuario.getSaldo());
+                    registrarLog("retirar", usuario.getNombre(), cantidad, true);
+                } else {
+                    System.out.println("No hay suficientes billetes disponibles para el monto solicitado.");
+                    registrarLog("retirar", usuario.getNombre(), cantidad, false);
+                }
+            } else {
+                System.out.println("No se puede realizar el retiro. Verifique el monto ingresado.");
+                registrarLog("retirar", usuario.getNombre(), cantidad, false);
+            }
+        } else {
+            System.out.println("No hay usuario registrado. Ingrese al modo cajero primero.");
+        }
     }
 
     public void registrarLog(String accion, String usuario, double saldo, boolean seRealizo) {
