@@ -69,7 +69,7 @@ public class CajeroAutomatico {
             //modoAdministrador();
         } else {
             //Agregar NIP usuario
-            //modoCajero(nombre);
+            modoCajero(nombre, nip);
         }
     }
 
@@ -80,10 +80,15 @@ public class CajeroAutomatico {
         //Agregar metodos del anterior proyecto
     }
 
+    private void modoAdministrador() {
+        //Crear la clase Administrador
+        //Crear el objeto Administrador
+    }
+
     public void consultarSaldo() {
         if (usuario != null) {
             //Getter de usuario.getSaldo
-            //System.out.println("Saldo actual: $" + usuario.getSaldo());
+            System.out.println("Saldo actual: $" + usuario.getSaldo());
         } else {
             System.out.println("No hay usuario registrado. Ingrese al modo cajero primero.");
         }
