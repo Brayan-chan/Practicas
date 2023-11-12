@@ -21,6 +21,7 @@ public class CajeroAutomatico {
 
     private Usuario usuario;
     private List<Billete> billetes;
+    private boolean isAdminMode = false;
 
     public CajeroAutomatico() {
         cargarBilletesIniciales();
@@ -59,15 +60,15 @@ public class CajeroAutomatico {
 
     public void iniciarSesion() {
         System.out.print("Ingrese su nombre de usuario: ");
-        String nombre = scanner.nextLine();
+        String nombre = scanner.next();
 
         System.out.print("Ingrese su NIP de 4 digitos: ");
         int nip = scanner.nextInt();
 
         //Condicional If para comprobar si los valores son del administrador o de un usuario
         if (nombre.equals("admin") && nip == 3243) {
-            //isAdminMode = true;
-            //modoAdministrador();
+            isAdminMode = true;
+            modoAdministrador();
         } else {
             //Agregar NIP usuario
             modoCajero(nombre, nip);
@@ -222,5 +223,17 @@ public class CajeroAutomatico {
 
             System.out.println("$" + denominacion + ": " + cantidadBilletes + " billetes");
         }
+    }
+
+    public boolean isAdministrador() {
+        return isAdminMode;
+    }
+
+    public void setAdminMode(boolean isAdminMode) {
+        this.isAdminMode = isAdminMode;
+    }
+
+    public List<Billete> getBilletes() {
+        return billetes;
     }
 }

@@ -1,0 +1,1 @@
+retirar,User,200.0,SI

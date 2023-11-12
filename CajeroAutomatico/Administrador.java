@@ -1,5 +1,6 @@
 package CajeroAutomatico;
 import java.io.Serializable;
+import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,34 +9,37 @@ public class Administrador implements Serializable {
     private static final String LOGS_FILE = "logs.txt";
 
     public void menuAdministrador(CajeroAutomatico cajero) {
-        int opcion;
-        do {
-            System.out.println("\nMenú Administrador:");
+        Scanner scanner = new Scanner(System.in);
+        Administrador administrador = new Administrador();
+        while (cajero.isAdministrador()) { // Utiliza el método isAdministrador()
+            System.out.println("Modo Administrador:");
             System.out.println("1. Mostrar listado de acciones");
             System.out.println("2. Mostrar cantidad de billetes disponibles");
-            System.out.println("3. Salir");
-            System.out.print("Ingrese la opción: ");
-            opcion = CajeroAutomatico.scanner.nextInt();
+            System.out.println("3. Salir del modo administrador");
+            System.out.print("Seleccione una opción: ");
+
+            int opcion = scanner.nextInt();
 
             switch (opcion) {
                 case 1:
-                    mostrarListadoAcciones();
+                    administrador.mostrarListadoAcciones();
                     break;
                 case 2:
-                    mostrarCantidadBilletesDisponibles(cajero);
+                    administrador.mostrarCantidadBilletesDisponibles(cajero);
                     break;
                 case 3:
-                    System.out.println("Sesión de administrador finalizada.");
+                    cajero.setAdminMode(false); // Utiliza el método setAdminMode()
+                    System.out.println("Saliendo del modo administrador.");
                     break;
                 default:
                     System.out.println("Opción no válida. Intente nuevamente.");
+                    break;
             }
-        } while (opcion != 3);
+        }
     }
     
     public void mostrarListadoAcciones() {
         System.out.println("Listado de acciones:");
-        //Agregar los metodos
         mostrarLogs();
     }
 

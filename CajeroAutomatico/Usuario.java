@@ -6,13 +6,13 @@ public class Usuario implements Serializable {
 
     private String nombre;
     private int nip;
-    private double saldo;
+    private int saldo;
 
     public Usuario(String nombre, int nip) {
         this.nombre = nombre;
         this.nip = nip;
         // Math.random para generar un saldo aleatorio entre $1,000 y $50,000
-        this.saldo = Math.random() * (50000 - 1000) + 1000; 
+        this.saldo = (int) (Math.random() * (50000 - 1000) + 1000);
     }
 
     public String getNombre() {
