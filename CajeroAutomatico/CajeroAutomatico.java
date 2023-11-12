@@ -24,6 +24,7 @@ public class CajeroAutomatico {
 
     public CajeroAutomatico() {
         cargarBilletesIniciales();
+        iniciarSesion();
     }
 
     public void cargarBilletesIniciales() {
@@ -78,11 +79,42 @@ public class CajeroAutomatico {
         System.out.println("¡Bienvenido al modo cajero, " + nombre + "!");
         System.out.println("Saldo actual: $" + usuario.getSaldo());
         //Agregar metodos del anterior proyecto
+        menuCajero();
+    }
+
+    private void menuCajero(){
+        int opcion;
+        //Do While para el menu de opciones
+        do {
+            System.out.println("\nMenú Cajero Automático:");
+            System.out.println("1. Consultar saldo");
+            System.out.println("2. Retirar efectivo");
+            System.out.println("3. Salir");
+            System.out.print("Ingrese una opcion: ");
+            opcion = scanner.nextInt();
+
+            switch (opcion) {
+                case 1:
+                    consultarSaldo();
+                    break;
+                case 2:
+                    System.out.print("Ingrese la cantidad a retirar: ");
+                    double cantidadRetiro = scanner.nextDouble();
+                    retirarEfectivo(cantidadRetiro);
+                    break;
+                case 3:
+                    System.out.println("Sesión finalizada.");
+                    break;
+                default:
+                    System.out.println("Opción no válida. Intente nuevamente.");
+            }
+
+        } while (opcion != 3);
     }
 
     private void modoAdministrador() {
-        //Crear la clase Administrador
-        //Crear el objeto Administrador
+        Administrador administrador = new Administrador();
+        administrador.menuAdministrador(this); 
     }
 
     public void consultarSaldo() {
@@ -155,8 +187,9 @@ public class CajeroAutomatico {
         //Guardar los nevos billetes disponibles
         guardarBilletes(); 
     }
-
     public void registrarLog(String accion, String usuario, double saldo, boolean seRealizo) {
+        //BufferedWriter: Permite escribir en un archivo de texto
+        //Se puede utilizar igual PrintWriter 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOGS_FILE, true))) {
             String logEntry = accion + "," + usuario + "," + saldo + "," + (seRealizo ? "SI" : "NO");
             writer.write(logEntry);
@@ -166,7 +199,7 @@ public class CajeroAutomatico {
         }
     }
 
-    public void mostrarLogs() {
+    /*public void mostrarLogs() {
         //BufferedReader: Permite leer un archivo de texto linea a linea
         //FileReader: Permite leer un archivo de texto completo 
         try (BufferedReader reader = new BufferedReader(new FileReader(LOGS_FILE))) {
@@ -178,6 +211,7 @@ public class CajeroAutomatico {
             e.printStackTrace();
         }
     }
+    */
 
     public void mostrarBilletesDisponibles() {
         System.out.println("Billetes disponibles:");
