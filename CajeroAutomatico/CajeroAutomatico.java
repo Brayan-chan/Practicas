@@ -1,8 +1,10 @@
 package CajeroAutomatico;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -122,6 +124,13 @@ public class CajeroAutomatico {
     }
 
     public void registrarLog(String accion, String usuario, double saldo, boolean seRealizo) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOGS_FILE, true))) {
+            String logEntry = accion + "," + usuario + "," + saldo + "," + (seRealizo ? "SI" : "NO");
+            writer.write(logEntry);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void mostrarLogs() {
