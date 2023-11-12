@@ -10,6 +10,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.FileReader;
+import java.io.BufferedReader;
 
 public class CajeroAutomatico {
     private static final String BILLETES_FILE = "billetes.dat";
@@ -134,8 +136,26 @@ public class CajeroAutomatico {
     }
 
     public void mostrarLogs() {
+        //BufferedReader: Permite leer un archivo de texto linea a linea
+        //FileReader: Permite leer un archivo de texto completo 
+        try (BufferedReader reader = new BufferedReader(new FileReader(LOGS_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void mostrarBilletesDisponibles() {
+        System.out.println("Billetes disponibles:");
+
+        for (Billete billete : billetes) {
+            int denominacion = billete.getDenominacion();
+            int cantidadBilletes = billete.getCantidad();
+
+            System.out.println("$" + denominacion + ": " + cantidadBilletes + " billetes");
+        }
     }
 }
