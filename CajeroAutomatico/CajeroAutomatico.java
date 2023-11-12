@@ -10,10 +10,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.io.FileReader;
 import java.io.BufferedReader;
 
 public class CajeroAutomatico {
+    static Scanner scanner = new Scanner(System.in);
     private static final String BILLETES_FILE = "billetes.dat";
     private static final String LOGS_FILE = "logs.txt";
 
@@ -51,6 +53,23 @@ public class CajeroAutomatico {
         } catch (IOException e) {
             //Stacktracem: Permite mostrar el nombre de una excepción junto con el mensaje que devuelve getMessage()
             e.printStackTrace();
+        }
+    }
+
+    public void iniciarSesion() {
+        System.out.print("Ingrese su nombre de usuario: ");
+        String nombre = scanner.nextLine();
+
+        System.out.print("Ingrese su NIP de 4 digitos: ");
+        int nip = scanner.nextInt();
+
+        //Condicional If para comprobar si los valores son del administrador o de un usuario
+        if (nombre.equals("admin") && nip == 3243) {
+            //isAdminMode = true;
+            //modoAdministrador();
+        } else {
+            //Agregar NIP usuario
+            //modoCajero(nombre);
         }
     }
 
