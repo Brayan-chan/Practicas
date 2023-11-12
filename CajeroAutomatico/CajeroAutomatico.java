@@ -73,6 +73,13 @@ public class CajeroAutomatico {
         }
     }
 
+    public void modoCajero(String nombre, int nip) {
+        usuario = new Usuario(nombre, nip);
+        System.out.println("¡Bienvenido al modo cajero, " + nombre + "!");
+        System.out.println("Saldo actual: $" + usuario.getSaldo());
+        //Agregar metodos del anterior proyecto
+    }
+
     public void consultarSaldo() {
         if (usuario != null) {
             //Getter de usuario.getSaldo
