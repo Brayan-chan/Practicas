@@ -1,4 +1,4 @@
-package CajeroAutomatico;
+package Cajero_Archivos;
 import java.util.Scanner;
 
 public class CajeroAutomaticoMain {

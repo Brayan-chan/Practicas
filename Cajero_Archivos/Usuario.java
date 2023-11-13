@@ -1,4 +1,4 @@
-package CajeroAutomatico;
+package Cajero_Archivos;
 import java.io.Serializable;
 
 public class Usuario implements Serializable {

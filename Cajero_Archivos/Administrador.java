@@ -1,4 +1,4 @@
-package CajeroAutomatico;
+package Cajero_Archivos;
 import java.io.Serializable;
 import java.util.Scanner;
 import java.io.BufferedReader;
