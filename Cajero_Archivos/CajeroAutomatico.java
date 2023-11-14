@@ -75,6 +75,11 @@ public class CajeroAutomatico {
         }
     }
 
+    public void mostrarMontoMinimoRetiro() {
+        int montoMinimo = billetes.stream().mapToInt(billete -> billete.getDenominacion() * billete.getCantidad()).sum();
+        System.out.println("Monto mínimo para retirar: $" + montoMinimo);
+    }
+
     public void modoCajero(String nombre, int nip) {
         usuario = new Usuario(nombre, nip);
         System.out.println("¡Bienvenido al modo cajero, " + nombre + "!");
@@ -87,6 +92,7 @@ public class CajeroAutomatico {
         int opcion;
         //Do While para el menu de opciones
         do {
+            mostrarMontoMinimoRetiro();
             System.out.println("\nMenú Cajero Automático:");
             System.out.println("1. Consultar saldo");
             System.out.println("2. Retirar efectivo");
@@ -199,20 +205,6 @@ public class CajeroAutomatico {
             e.printStackTrace();
         }
     }
-
-    /*public void mostrarLogs() {
-        //BufferedReader: Permite leer un archivo de texto linea a linea
-        //FileReader: Permite leer un archivo de texto completo 
-        try (BufferedReader reader = new BufferedReader(new FileReader(LOGS_FILE))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    */
 
     public void mostrarBilletesDisponibles() {
         System.out.println("Billetes disponibles:");

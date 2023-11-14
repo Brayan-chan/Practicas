@@ -12,7 +12,7 @@ public class Administrador implements Serializable {
         Scanner scanner = new Scanner(System.in);
         Administrador administrador = new Administrador();
         while (cajero.isAdministrador()) { // Utiliza el método isAdministrador()
-            System.out.println("Modo Administrador:");
+            System.out.println("\nModo Administrador:");
             System.out.println("1. Mostrar listado de acciones");
             System.out.println("2. Mostrar cantidad de billetes disponibles");
             System.out.println("3. Salir del modo administrador");
@@ -28,7 +28,8 @@ public class Administrador implements Serializable {
                     administrador.mostrarCantidadBilletesDisponibles(cajero);
                     break;
                 case 3:
-                    cajero.setAdminMode(false); // Utiliza el método setAdminMode()
+                    cajero.setAdminMode(false);
+                    // Utiliza el método setAdminMode()
                     System.out.println("Saliendo del modo administrador.");
                     break;
                 default:
