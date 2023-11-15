@@ -92,6 +92,7 @@ public class CajeroAutomatico {
         int opcion;
         //Do While para el menu de opciones
         do {
+            mostrarBilletesDisponibles();
             mostrarMontoMinimoRetiro();
             System.out.println("\nMenú Cajero Automático:");
             System.out.println("1. Consultar saldo");
@@ -106,7 +107,7 @@ public class CajeroAutomatico {
                     break;
                 case 2:
                     System.out.print("Ingrese la cantidad a retirar: ");
-                    double cantidadRetiro = scanner.nextDouble();
+                    int cantidadRetiro = scanner.nextInt();
                     retirarEfectivo(cantidadRetiro);
                     break;
                 case 3:
@@ -133,7 +134,8 @@ public class CajeroAutomatico {
         }
     }
 
-    public void retirarEfectivo(double cantidad) {
+    //De double a int 
+    public void retirarEfectivo(int cantidad) {
         if (usuario != null) {
             if (cantidad > 0 && cantidad <= usuario.getSaldo()) {
                 if (verificarDisponibilidadBilletes(cantidad)) {
@@ -156,7 +158,8 @@ public class CajeroAutomatico {
         }
     }
 
-    private boolean verificarDisponibilidadBilletes(double cantidad) {
+    //double a int
+    private boolean verificarDisponibilidadBilletes(int cantidad) {
         int montoRestante = (int) cantidad;
 
         for (Billete billete : billetes) {
@@ -180,7 +183,8 @@ public class CajeroAutomatico {
         return false;
     }
 
-    private void actualizarBilletesDisponibles(double cantidadRetirada) {
+    //de double a int 
+    private void actualizarBilletesDisponibles(int cantidadRetirada) {
         for (Billete billete : billetes) {
             int denominacion = billete.getDenominacion();
             int cantidadBilletes = billete.getCantidad();
@@ -192,9 +196,10 @@ public class CajeroAutomatico {
             billete.setCantidad(cantidadBilletes - billetesUtilizados);
         }
         //Guardar los nevos billetes disponibles
-        guardarBilletes(); 
+        guardarBilletes();
     }
-    public void registrarLog(String accion, String usuario, double saldo, boolean seRealizo) {
+    
+    public void registrarLog(String accion, String usuario, int saldo, boolean seRealizo) {
         //BufferedWriter: Permite escribir en un archivo de texto
         //Se puede utilizar igual PrintWriter 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOGS_FILE, true))) {

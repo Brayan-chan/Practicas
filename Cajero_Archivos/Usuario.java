@@ -23,12 +23,12 @@ public class Usuario implements Serializable {
         return nip;
     }
 
-    public double getSaldo() {
+    public int getSaldo() {
         return saldo;
     }
 
     // Método para retirar saldo
-    public void retirarSaldo(double cantidad) {
+    public void retirarSaldo(int cantidad) {
         saldo -= cantidad;
     }
 }
