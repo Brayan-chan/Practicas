@@ -22,3 +22,8 @@ retirar,user,100,NO
 retirar,user,200,SI
 retirar,user,400,SI
 retirar,user,800,SI
+retirar,user,200,SI
+retirar,user,200,SI
+retirar,user,200,SI
+retirar,user,200,SI
+retirar,user,1000,SI

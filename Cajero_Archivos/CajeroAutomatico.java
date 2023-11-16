@@ -22,10 +22,32 @@ public class CajeroAutomatico {
     private Usuario usuario;
     private List<Billete> billetes;
     private boolean isAdminMode = false;
+    private List<Usuario> listaDeUsuarios = new ArrayList<>();
 
     public CajeroAutomatico() {
         cargarBilletesIniciales();
         iniciarSesion();
+        cargarUsuarios();
+    }
+
+    private void cargarUsuarios() {
+        File file = new File("usuarios.dat");
+
+        if (file.exists() && !file.isDirectory()) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+                listaDeUsuarios = (List<Usuario>) ois.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void guardarUsuarios() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("usuarios.dat"))) {
+            oos.writeObject(listaDeUsuarios);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void cargarBilletesIniciales() {
@@ -64,35 +86,63 @@ public class CajeroAutomatico {
 
         System.out.print("Ingrese su NIP de 4 digitos: ");
         int nip = scanner.nextInt();
+        Usuario usuarioExistente = buscarUsuario(nombre, nip);
 
         //Condicional If para comprobar si los valores son del administrador o de un usuario
         if (nombre.equals("admin") && nip == 3243) {
             isAdminMode = true;
             modoAdministrador();
+        } else if (usuarioExistente != null) {
+            usuario = usuarioExistente;
+            System.out.println("¡Bienvenido de nuevo, " + usuario.getNombre() + "!");
+            menuCajero();
+            //modoCajero(nombre, nip);
         } else {
-            //Agregar NIP usuario
-            modoCajero(nombre, nip);
+            usuario = new Usuario(nombre, nip);
+            listaDeUsuarios.add(usuario);
+            guardarUsuarios(); 
+            System.out.println("\n¡Bienvenido al modo cajero, " + nombre + "!");
+            System.out.println("Saldo actual: $" + usuario.getSaldo());
+            menuCajero();
         }
+    }
+
+    private Usuario buscarUsuario(String nombre, int nip) {
+        for (Usuario user : listaDeUsuarios) {
+            if (user.getNombre().equals(nombre) && user.getNip() == nip) {
+                return user;
+            }
+        }
+        return null;
     }
 
     public void mostrarMontoMinimoRetiro() {
         int montoMinimo = billetes.stream().mapToInt(billete -> billete.getDenominacion() * billete.getCantidad()).sum();
-        System.out.println("Monto mínimo para retirar: $" + montoMinimo);
+        System.out.println("\nMonto mínimo para retirar: $" + montoMinimo);
     }
 
-    public void modoCajero(String nombre, int nip) {
-        usuario = new Usuario(nombre, nip);
-        System.out.println("¡Bienvenido al modo cajero, " + nombre + "!");
+    private void modoCajero(String nombre, int nip) {
+        Usuario usuarioExistente = buscarUsuario(nombre, nip);
+
+        if (usuarioExistente != null) {
+            usuario = usuarioExistente;
+            System.out.println("¡Bienvenido de nuevo, " + usuario.getNombre() + "!");
+        } else {
+            usuario = new Usuario(nombre, nip);
+            listaDeUsuarios.add(usuario);
+            guardarUsuarios();
+            System.out.println("¡Bienvenido al modo cajero, " + nombre + "!");
+        }
+
         System.out.println("Saldo actual: $" + usuario.getSaldo());
-        //Agregar metodos del anterior proyecto
         menuCajero();
     }
 
     private void menuCajero(){
         int opcion;
-        //Do While para el menu de opciones
+    
         do {
-            mostrarBilletesDisponibles();
+            //mostrarBilletesDisponibles();
             mostrarMontoMinimoRetiro();
             System.out.println("\nMenú Cajero Automático:");
             System.out.println("1. Consultar saldo");
@@ -128,9 +178,9 @@ public class CajeroAutomatico {
     public void consultarSaldo() {
         if (usuario != null) {
             //Getter de usuario.getSaldo
-            System.out.println("Saldo actual: $" + usuario.getSaldo());
+            System.out.println("\nSaldo actual: $" + usuario.getSaldo());
         } else {
-            System.out.println("No hay usuario registrado. Ingrese al modo cajero primero.");
+            System.out.println("\nNo hay usuario registrado. Ingrese al modo cajero primero.");
         }
     }
 
