@@ -56,7 +56,7 @@ public class Administrador implements Serializable {
                 System.out.println(line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error al mostrar listado de acciones. Por favor, contacte al soporte.");
         }
     }
 }

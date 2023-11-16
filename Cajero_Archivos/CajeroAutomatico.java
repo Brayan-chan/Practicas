@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.io.FileReader;
@@ -37,7 +38,7 @@ public class CajeroAutomatico {
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
                 listaDeUsuarios = (List<Usuario>) ois.readObject();
             } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
+                System.err.println("Error al guardar usuarios. Por favor, contacte al soporte.");
             }
         }
     }
@@ -57,7 +58,7 @@ public class CajeroAutomatico {
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
                 billetes = (List<Billete>) ois.readObject();
             } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
+                System.err.println("Error al cargar billetes iniciales. Por favor, contacte al soporte.");
             }
         } else {
             // Si el archivo no existe, crea billetes iniciales y guárdalos
@@ -75,17 +76,28 @@ public class CajeroAutomatico {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(BILLETES_FILE))) {
             oos.writeObject(billetes);
         } catch (IOException e) {
-            //Stacktracem: Permite mostrar el nombre de una excepción junto con el mensaje que devuelve getMessage()
-            e.printStackTrace();
+            System.err.println("Error al guardar billetes. Por favor, contacte al soporte.");
         }
     }
 
     public void iniciarSesion() {
         System.out.print("Ingrese su nombre de usuario: ");
         String nombre = scanner.next();
+        System.out.println("");
 
         System.out.print("Ingrese su NIP de 4 digitos: ");
-        int nip = scanner.nextInt();
+        int nip = 0;
+
+        try {
+            nip = scanner.nextInt();
+
+            if (nip < 1000 || nip > 9999) {
+                System.out.println("El NIP debe ser de 4 digitos.");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("El NIP debe ser entero. ");
+        }
+
         Usuario usuarioExistente = buscarUsuario(nombre, nip);
 
         //Condicional If para comprobar si los valores son del administrador o de un usuario
@@ -122,20 +134,25 @@ public class CajeroAutomatico {
     }
 
     private void modoCajero(String nombre, int nip) {
-        Usuario usuarioExistente = buscarUsuario(nombre, nip);
+        try {
+            Usuario usuarioExistente = buscarUsuario(nombre, nip);
 
-        if (usuarioExistente != null) {
-            usuario = usuarioExistente;
-            System.out.println("¡Bienvenido de nuevo, " + usuario.getNombre() + "!");
-        } else {
-            usuario = new Usuario(nombre, nip);
-            listaDeUsuarios.add(usuario);
-            guardarUsuarios();
-            System.out.println("¡Bienvenido al modo cajero, " + nombre + "!");
+            if (usuarioExistente != null) {
+                usuario = usuarioExistente;
+                System.out.println("¡Bienvenido de nuevo, " + usuario.getNombre() + "!");
+            } else {
+                usuario = new Usuario(nombre, nip);
+                listaDeUsuarios.add(usuario);
+                guardarUsuarios();
+                System.out.println("¡Bienvenido al modo cajero, " + nombre + "!");
+            }
+
+            System.out.println("Saldo actual: $" + usuario.getSaldo());
+            menuCajero();
+        } catch (Exception e) {
+            System.err.println("Error al entrar al modo cajero. Por favor, contacte al soporte.");
         }
-
-        System.out.println("Saldo actual: $" + usuario.getSaldo());
-        menuCajero();
+        
     }
 
     private void menuCajero(){
@@ -149,7 +166,15 @@ public class CajeroAutomatico {
             System.out.println("2. Retirar efectivo");
             System.out.println("3. Salir");
             System.out.print("Ingrese una opcion: ");
-            opcion = scanner.nextInt();
+            
+            try {
+                opcion = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Error: Ingrese un número válido como opción. Inténtelo de nuevo.");
+                scanner.next(); 
+                opcion = 0; 
+                continue; 
+            }
 
             switch (opcion) {
                 case 1:
@@ -157,7 +182,15 @@ public class CajeroAutomatico {
                     break;
                 case 2:
                     System.out.print("Ingrese la cantidad a retirar: ");
-                    int cantidadRetiro = scanner.nextInt();
+                    int cantidadRetiro = 0;
+                    try {
+                        cantidadRetiro = scanner.nextInt();
+                    } catch (InputMismatchException e) {
+                        System.out.println("Error: Ingrese un número válido como cantidad a retirar. Inténtelo de nuevo.");
+                        scanner.next(); 
+                        continue; 
+                    }
+
                     retirarEfectivo(cantidadRetiro);
                     break;
                 case 3:
@@ -177,15 +210,26 @@ public class CajeroAutomatico {
 
     public void consultarSaldo() {
         if (usuario != null) {
-            //Getter de usuario.getSaldo
-            System.out.println("\nSaldo actual: $" + usuario.getSaldo());
+            int saldoConsultado = usuario.getSaldo();
+            System.out.println("Saldo actual: $" + saldoConsultado);
+            registrarLog("consultar", usuario.getNombre(), saldoConsultado, true);
         } else {
-            System.out.println("\nNo hay usuario registrado. Ingrese al modo cajero primero.");
+            System.out.println("No hay usuario registrado. Ingrese al modo cajero primero.");
         }
     }
 
     //De double a int 
     public void retirarEfectivo(int cantidad) {
+        try {
+            Integer.parseInt(String.valueOf(cantidad)); 
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("El monto a retirar debe ser numérico. Inténtelo de nuevo.");
+        }
+
+        if (cantidad <= 0) {
+            throw new RuntimeException("Saldo a retirar incorrecto. Debe ser mayor que cero. Inténtelo de nuevo.");
+        }
+
         if (usuario != null) {
             if (cantidad > 0 && cantidad <= usuario.getSaldo()) {
                 if (verificarDisponibilidadBilletes(cantidad)) {
@@ -210,27 +254,23 @@ public class CajeroAutomatico {
 
     //double a int
     private boolean verificarDisponibilidadBilletes(int cantidad) {
-        int montoRestante = (int) cantidad;
+        List<Billete> billetesDisponibles = new ArrayList<>(billetes);
 
-        for (Billete billete : billetes) {
+        for (Billete billete : billetesDisponibles) {
             int denominacion = billete.getDenominacion();
             int cantidadBilletes = billete.getCantidad();
 
-            int billetesNecesarios = montoRestante / denominacion;
+            if (cantidadBilletes > 0) {
+                int billetesNecesarios = cantidad / denominacion;
+                int billetesAUsar = Math.min(billetesNecesarios, cantidadBilletes);
 
-            int billetesAUsar = Math.min(billetesNecesarios, cantidadBilletes);
+                cantidad -= billetesAUsar * denominacion;
 
-            if (billetesAUsar > 0) {
-                montoRestante -= billetesAUsar * denominacion;
-            }
-
-            if (montoRestante == 0) {
-                // Combinación de billetes 
                 billete.setCantidad(cantidadBilletes - billetesAUsar);
-                return true;
             }
         }
-        return false;
+
+        return cantidad == 0;
     }
 
     //de double a int 
@@ -266,7 +306,7 @@ public class CajeroAutomatico {
 
         for (Billete billete : billetes) {
             int denominacion = billete.getDenominacion();
-            int cantidadBilletes = billete.getCantidad();
+            int cantidadBilletes = Math.max(billete.getCantidad(), 0);
 
             System.out.println("$" + denominacion + ": " + cantidadBilletes + " billetes");
         }
